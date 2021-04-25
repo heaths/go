@@ -232,6 +232,8 @@ var parseTests = []parseTest{
 		`{{range $x, $y := .SI}}{{.}}{{end}}`},
 	{"constants", "{{range .SI 1 -3.2i true false 'a' nil}}{{end}}", noError,
 		`{{range .SI 1 -3.2i true false 'a' nil}}{{end}}`},
+	{"simple table", "{{table .}}{{.id}}\t{{.name}}{{end}}", noError,
+		`{{table .}}{{.id}}"\t"{{.name}}{{end}}`},
 	{"template", "{{template `x`}}", noError,
 		`{{template "x"}}`},
 	{"template with arg", "{{template `x` .Y}}", noError,

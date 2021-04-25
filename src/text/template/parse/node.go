@@ -67,6 +67,7 @@ const (
 	NodePipe                       // A pipeline of commands.
 	NodeRange                      // A range action.
 	NodeString                     // A string constant.
+	NodeTable                      // A table action.
 	NodeTemplate                   // A template invocation action.
 	NodeVariable                   // A $ variable.
 	NodeWith                       // A with action.
@@ -835,7 +836,7 @@ func (e *elseNode) Copy() Node {
 	return e.tr.newElse(e.Pos, e.Line)
 }
 
-// BranchNode is the common representation of if, range, and with.
+// BranchNode is the common representation of if, range, table, and with.
 type BranchNode struct {
 	NodeType
 	Pos
@@ -859,6 +860,8 @@ func (b *BranchNode) writeTo(sb *strings.Builder) {
 		name = "if"
 	case NodeRange:
 		name = "range"
+	case NodeTable:
+		name = "table"
 	case NodeWith:
 		name = "with"
 	default:
@@ -887,6 +890,8 @@ func (b *BranchNode) Copy() Node {
 		return b.tr.newIf(b.Pos, b.Line, b.Pipe, b.List, b.ElseList)
 	case NodeRange:
 		return b.tr.newRange(b.Pos, b.Line, b.Pipe, b.List, b.ElseList)
+	case NodeTable:
+		return b.tr.newTable(b.Pos, b.Line, b.Pipe, b.List, b.ElseList)
 	case NodeWith:
 		return b.tr.newWith(b.Pos, b.Line, b.Pipe, b.List, b.ElseList)
 	default:
@@ -918,6 +923,19 @@ func (t *Tree) newRange(pos Pos, line int, pipe *PipeNode, list, elseList *ListN
 
 func (r *RangeNode) Copy() Node {
 	return r.tr.newRange(r.Pos, r.Line, r.Pipe.CopyPipe(), r.List.CopyList(), r.ElseList.CopyList())
+}
+
+// TableNode represents a {{table}} action and its commands.
+type TableNode struct {
+	BranchNode
+}
+
+func (t *Tree) newTable(pos Pos, line int, pipe *PipeNode, list, elseList *ListNode) *TableNode {
+	return &TableNode{BranchNode{tr: t, NodeType: NodeTable, Pos: pos, Line: line, Pipe: pipe, List: list, ElseList: elseList}}
+}
+
+func (r *TableNode) Copy() Node {
+	return r.tr.newTable(r.Pos, r.Line, r.Pipe.CopyPipe(), r.List.CopyList(), r.ElseList.CopyList())
 }
 
 // WithNode represents a {{with}} action and its commands.

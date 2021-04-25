@@ -265,6 +265,8 @@ func (s *state) walk(dot reflect.Value, node parse.Node) {
 		}
 	case *parse.RangeNode:
 		s.walkRange(dot, node)
+	case *parse.TableNode:
+		s.walkTable(dot, node)
 	case *parse.TemplateNode:
 		s.walkTemplate(dot, node)
 	case *parse.TextNode:
@@ -397,6 +399,10 @@ func (s *state) walkRange(dot reflect.Value, r *parse.RangeNode) {
 	if r.ElseList != nil {
 		s.walk(dot, r.ElseList)
 	}
+}
+
+func (s *state) walkTable(dot reflect.Value, r *parse.TableNode) {
+	s.errorf("table not implemented")
 }
 
 func (s *state) walkTemplate(dot reflect.Value, t *parse.TemplateNode) {

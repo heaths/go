@@ -69,6 +69,7 @@ const (
 	itemIf       // if keyword
 	itemNil      // the untyped nil constant, easiest to treat as a keyword
 	itemRange    // range keyword
+	itemTable    // table keyword
 	itemTemplate // template keyword
 	itemWith     // with keyword
 )
@@ -82,6 +83,7 @@ var key = map[string]itemType{
 	"if":       itemIf,
 	"range":    itemRange,
 	"nil":      itemNil,
+	"table":    itemTable,
 	"template": itemTemplate,
 	"with":     itemWith,
 }

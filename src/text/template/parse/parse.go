@@ -279,6 +279,7 @@ func IsEmptyTree(n Node) bool {
 		}
 		return true
 	case *RangeNode:
+	case *TableNode:
 	case *TemplateNode:
 	case *TextNode:
 		return len(bytes.TrimSpace(n.Text)) == 0
@@ -394,6 +395,8 @@ func (t *Tree) action() (n Node) {
 		return t.ifControl()
 	case itemRange:
 		return t.rangeControl()
+	case itemTable:
+		return t.tableControl()
 	case itemTemplate:
 		return t.templateControl()
 	case itemWith:
@@ -524,6 +527,13 @@ func (t *Tree) ifControl() Node {
 // Range keyword is past.
 func (t *Tree) rangeControl() Node {
 	return t.newRange(t.parseControl(false, "range"))
+}
+
+// Table:
+//	{{table pipeline}} itemList {{end}}
+// Table keyword is past.
+func (t *Tree) tableControl() Node {
+	return t.newTable(t.parseControl(false, "table"))
 }
 
 // With:

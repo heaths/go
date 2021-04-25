@@ -41,6 +41,7 @@ var itemName = map[itemType]string{
 	itemEnd:      "end",
 	itemNil:      "nil",
 	itemRange:    "range",
+	itemTable:    "table",
 	itemTemplate: "template",
 	itemWith:     "with",
 }
@@ -204,7 +205,7 @@ var lexTests = []lexTest{
 		tRight,
 		tEOF,
 	}},
-	{"keywords", "{{range if else end with}}", []item{
+	{"keywords", "{{range if else end with table}}", []item{
 		tLeft,
 		mkItem(itemRange, "range"),
 		tSpace,
@@ -215,6 +216,8 @@ var lexTests = []lexTest{
 		mkItem(itemEnd, "end"),
 		tSpace,
 		mkItem(itemWith, "with"),
+		tSpace,
+		mkItem(itemTable, "table"),
 		tRight,
 		tEOF,
 	}},
